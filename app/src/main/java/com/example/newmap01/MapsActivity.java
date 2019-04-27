@@ -1,7 +1,11 @@
 package com.example.newmap01;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,6 +13,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,5 +50,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        //緯度経度を指定して住所住所
+        String result = getaddress(this, -34,151);
+        Log.d("QQQQ", result);
     }
-}
+
+        //緯度経度から住所を取得するメゾット
+    private String getaddress(Context con,double lat, double lng) {
+        Geocoder geo = new Geocoder(con, Locale.getDefault());
+        List<Address> adds;
+
+        try {
+            adds=geo.getFromLocation(lat,lng,1);
+        }
+        catch ( IOException e) {
+            return "";
+
+        //    Log.d("QQQQ","");
+
+            return adds.get(0).getCountryName();
+
+        }
+
+
+
+    }
+    }
+
